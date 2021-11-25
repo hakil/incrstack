@@ -92,7 +92,7 @@ public class BaseException extends RuntimeException implements ErrorEntity {
      * 例如.使用printStackTrace()打印异常信息时使用默认异常打印格式
      * 而在作为ErrorEntity对象toString()时打印Json格式
      */
-    private static class ErrorEntityAdapter extends BaseException {
+    private static class ErrorEntityAdapter implements ErrorEntity {
         private final ErrorEntity errorEntity;
 
         public ErrorEntityAdapter(BaseException cause) {
