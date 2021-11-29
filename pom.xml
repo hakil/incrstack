@@ -21,9 +21,20 @@
 
     <properties>
         <java.version>11</java.version>
+        <jakarta.version>8.0.0</jakarta.version>
         <!--maven plugin-->
         <maven.dockerfile.plugin>1.4.13</maven.dockerfile.plugin>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-api</artifactId>
+                <version>${jakarta.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
     <profiles>
