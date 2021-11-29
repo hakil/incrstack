@@ -21,17 +21,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021/11/25 17:54
  */
 @Slf4j
-public class DynamicSecurityMetadataSource implements SecurityMetadataSource {
+public class FilterInvocationSecurityMetadataSourceAdapter implements SecurityMetadataSource {
 
-    private final Map<RequestMatcher, Collection<ConfigAttribute>> requestMap;
+    protected final Map<RequestMatcher, Collection<ConfigAttribute>> requestMap;
     /**
      * 默认配置文件或者注解等配置的元数据
      */
-    private final FilterInvocationSecurityMetadataSource defaultMetadataSource;
+    protected final FilterInvocationSecurityMetadataSource defaultMetadataSource;
 
-    public DynamicSecurityMetadataSource(FilterInvocationSecurityMetadataSource defaultMetadataSource) {
+    public FilterInvocationSecurityMetadataSourceAdapter(FilterInvocationSecurityMetadataSource defaultMetadataSource) {
         this.defaultMetadataSource = defaultMetadataSource;
-        this.requestMap = new ConcurrentHashMap<>();
+        requestMap = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -49,6 +49,7 @@ public class DynamicSecurityMetadataSource implements SecurityMetadataSource {
             }
         }
         return defaultMetadataSource.getAttributes(object);
+
     }
 
     @Override
