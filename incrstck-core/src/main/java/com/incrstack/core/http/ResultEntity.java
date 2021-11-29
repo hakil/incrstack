@@ -12,9 +12,10 @@ import java.io.Serializable;
 public interface ResultEntity<T> extends Serializable {
 
     /**
-     * 获取接口执行状态
+     * 请求资源状态
+     * 一般用于映射到http外部status
      *
-     * @return 根据httpStatus判断业务执行状态
+     * @return 资源状态非业务状态
      */
     default int getHttpStatus() {
         return 200;
