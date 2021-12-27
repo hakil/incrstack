@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021/11/25 17:54
  */
 @Slf4j
-public class FilterInvocationSecurityMetadataSourceAdapter implements SecurityMetadataSource {
+public class FilterInvocationMetadataSourceAdapter implements SecurityMetadataSource, MetadataSourceManager<RequestMatcher, Collection<ConfigAttribute>> {
 
     protected final Map<RequestMatcher, Collection<ConfigAttribute>> requestMap;
     /**
@@ -29,7 +29,7 @@ public class FilterInvocationSecurityMetadataSourceAdapter implements SecurityMe
      */
     protected final FilterInvocationSecurityMetadataSource defaultMetadataSource;
 
-    public FilterInvocationSecurityMetadataSourceAdapter(FilterInvocationSecurityMetadataSource defaultMetadataSource) {
+    public FilterInvocationMetadataSourceAdapter(FilterInvocationSecurityMetadataSource defaultMetadataSource) {
         this.defaultMetadataSource = defaultMetadataSource;
         requestMap = new ConcurrentHashMap<>();
     }
@@ -49,7 +49,6 @@ public class FilterInvocationSecurityMetadataSourceAdapter implements SecurityMe
             }
         }
         return defaultMetadataSource.getAttributes(object);
-
     }
 
     @Override
@@ -63,5 +62,35 @@ public class FilterInvocationSecurityMetadataSourceAdapter implements SecurityMe
     @Override
     public boolean supports(Class<?> clazz) {
         return FilterInvocation.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void add(RequestMatcher requestMatcher, Collection<ConfigAttribute> configAttributes) {
+        requestMap.put(requestMatcher, configAttributes);
+    }
+
+    @Override
+    public Collection<ConfigAttribute> get(RequestMatcher requestMatcher) {
+        return requestMap.get(requestMatcher);
+    }
+
+    @Override
+    public Map<RequestMatcher, Collection<ConfigAttribute>> getAll() {
+        return requestMap;
+    }
+
+    @Override
+    public void delete(RequestMatcher requestMatcher) {
+        requestMap.remove(requestMatcher);
+    }
+
+    @Override
+    public void deleteAll() {
+        requestMap.clear();
+    }
+
+    @Override
+    public void update(RequestMatcher requestMatcher, Collection<ConfigAttribute> configAttributes) {
+        requestMap.put(requestMatcher, configAttributes);
     }
 }
